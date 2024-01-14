@@ -22,5 +22,6 @@ public interface AdminService {
 	public String deletecommentadmin(int id);
 	public List<comment> ViewallComments();
 	public List<comment> viewallcommentwithid(int id);
+	public long countuser();
 	
 }

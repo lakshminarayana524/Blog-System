@@ -82,8 +82,8 @@
 </head>
 <body>
  
+<%@ include file="userlognav.jsp" %>
     <div>
-        <a href="dashboard.jsp" class="back-button">Back</a>
         <c:forEach items="${blogs}" var="blog">
             <a href='<c:url value="viewblogwithcommentinuser?id=${blog.id}"></c:url>'>
                 <div class="container">

@@ -41,47 +41,9 @@ public class User {
         this.image = image;
     }
 
-    // Additional setter to handle default image path
-    public void setImage(String imagePath) {
-        // Convert imagePath to Blob and set it as the image
-        // This assumes you have a utility method to convert a file path to Blob
-        // You might need to adjust this part based on your actual implementation
-        try {
-            // If the provided image path is null or empty, set a default path
-            if (imagePath == null || imagePath.isEmpty()) {
-                imagePath = "./imgs/profile.png";
-            }
-
-            // Convert imagePath to Blob and set it as the image
-            // This is a simplified example, you might need to adjust this based on your actual implementation
-            // e.g., using FileInputStream, etc.
-            // Replace the following line with your actual Blob conversion logic
-            this.image = convertImagePathToBlob(imagePath);
-        } catch (SQLException e) {
-            // Handle SQLException
-            e.printStackTrace();
-        }
-    }
-
-    private Blob convertImagePathToBlob(String imagePath) throws SQLException {
-        // Your logic to convert imagePath to Blob
-        // This is a placeholder, you should implement the actual conversion
-        // For example, you might use FileInputStream to read the image file and convert it to Blob
-        // Replace the following line with your actual implementation
-        // Blob blob = new SerialBlob(imageBytes);
-        return null;
-    }
-
-    // Other getters and setters...
-
-    public String toString() {
-        return "User[id= " + id + ", name= " + name + ", username=" + username + ", contact=" + contactno + ", email="
-                + email + ", pass=" + pass + "]";
-    }
-
-	public void setContactno(String contact) {
+	public void setContactno(String contactno) {
 		// TODO Auto-generated method stub
-		
+		this.contactno=contactno;
 	}
 
 	public int getId() {
@@ -127,6 +89,9 @@ public class User {
 	public String getContactno() {
 		return contactno;
 	}
-
+	 public String toString() {
+	        return "User[id= " + id + ", name= " + name + ", username=" + username + ", contactno=" + contactno + ", email="
+	                + email + ", pass=" + pass + "]";
+	    }
 	
 }

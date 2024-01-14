@@ -161,6 +161,13 @@ public class AdminManager implements AdminService{
         return msg;
 	}
 
+	@Override
+	public long  countuser() {
+		long count= ar.countalluser();
+		System.out.println(count);
+		return count;
+	}
+
 	
 	
 	

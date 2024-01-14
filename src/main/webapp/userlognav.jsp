@@ -18,7 +18,7 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
-            position:fixes;
+            position:fixes	;
         }
 
         /* Navbar styles */
@@ -28,8 +28,8 @@
             padding: 10px 0;
         }
 
-        /* Container styles */
-        .container {
+        /* containernav styles */
+        .containernav {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -140,11 +140,11 @@
     </style>
 </head>
 <body>
-    <nav class "navbar">
-        <div class="container">
-            <a href="dashboard.jsp" class="logo">Blog Guru</a>
+    <nav class="navbar">
+        <div class="containernav">
+            <a href="viewAllblog" class="logo">Blog Guru</a>
             <ul class="menu">
-                <li><a href="dashboard.jsp">Home</a></li>
+                <li><a href="viewAllblog">Home</a></li>
                 <!-- Dropdown menu for Blog -->
                 <li class="dropdown">
                     <a href="javascript:void(0)">Blog</a>
@@ -156,18 +156,14 @@
                 <li><a href="about.jsp">About</a></li>
                 <li><a href="contact.jsp">Contact</a></li>
                  <li class="dropdown">
-                    <c:choose>
-                        <c:when test="${eimage}">
-                            <img src="${displayuserimage}" id="avatar" />
-                        </c:when>
-                        <c:otherwise>
+                   
+                          
                             <div id="avatar">
                                 <i class="fa fa-user" style="font-size: 23px;"></i>
                             </div>
-                        </c:otherwise>
-                    </c:choose>
+                       
                      <div class="dropdown-content">
-                        <a href="userprofile.jsp" >Profile</a>
+                        <a href="userprofile.jsp" > Hi,<span>${ename}</span></a>
                         <a href="index.jsp" >Logout</a>
                     </div>
                 </li>

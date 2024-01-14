@@ -169,45 +169,54 @@ public class UserController {
 	
 	
 	@PostMapping("login")
-	public ModelAndView checklogin(HttpServletRequest request)
-	{
-		
-		ModelAndView mv=new ModelAndView();
-		
-		String email = request.getParameter("email");
-	    String pass = request.getParameter("pass");
-	    
-	    Admin admin= as.checkadminlogin(email, pass);
-	    
-	    User emp =  us.checklogin(email, pass);
-	    if(admin!=null) {
-	    	mv.setViewName("admindash");
-	    }else if(emp!=null){
-	    	
-	      //session
-	      HttpSession session = request.getSession();
-	      
-	      session.setAttribute("eid", emp.getId()); //eid is a session variable
-	      session.setAttribute("ename", emp.getName());
-	      session.setAttribute("eemail", emp.getEmail());//ename is a session variable
-	      session.setAttribute("eusername", emp.getUsername());
-	      session.setAttribute("econtact", emp.getContactno());
-	      session.setAttribute("epass", emp.getPass());
-	      session.setAttribute("image", emp.getImage());
-	      
-	 
-	      mv.setViewName("dashboard");
-	    }
-	    else
-	    {
-	      mv.setViewName("login");
-	      mv.addObject("message", "Login Failed");
-	      request.setAttribute("errorMessage", "Incorrect email or password. Please try again.");
+	public ModelAndView checklogin(HttpServletRequest request) {
+	    ModelAndView mv = new ModelAndView();
 
+	    String email = request.getParameter("email");
+	    String pass = request.getParameter("pass");
+
+	    Admin admin = as.checkadminlogin(email, pass);
+	    User emp = us.checklogin(email, pass);
+
+	    if (admin != null) {
+	        mv.setViewName("admindash");
+	    } else if (emp != null) {
+	        // Session
+	        HttpSession session = request.getSession();
+
+	        session.setAttribute("eid", emp.getId());
+	        session.setAttribute("ename", emp.getName());
+	        session.setAttribute("eemail", emp.getEmail());
+	        session.setAttribute("eusername", emp.getUsername());
+	        session.setAttribute("econtact", emp.getContactno());
+	        session.setAttribute("epass", emp.getPass());
+	        session.setAttribute("image", emp.getImage());
+
+	        // Fetch the list of blogs
+	        List<CreateBlog> bloglist = cbs.viewAllBlog();
+
+	        // Set the list of blogs in the session
+	        session.setAttribute("blogs", bloglist);
+
+	        mv.setViewName("viewAllblog");
+	    } else {
+	        mv.setViewName("login");
+	        mv.addObject("message", "Login Failed");
+	        request.setAttribute("errorMessage", "Incorrect email or password. Please try again.");
 	    }
+
 	    return mv;
-	    
 	}
+
+	
+	@PostMapping("/countusers")
+	public ModelAndView Countnoofusers(ModelAndView modelAndView) {
+	    long usercount = as.countuser();
+	    modelAndView.addObject("usercount", usercount);
+	    modelAndView.setViewName("admindash");
+	    return modelAndView;
+	}
+
 	
 	@PostMapping("update")
 	  public ModelAndView updateaction(HttpServletRequest request, @RequestParam("contact") String contact,@RequestParam("image") MultipartFile file) throws IOException, SQLException
