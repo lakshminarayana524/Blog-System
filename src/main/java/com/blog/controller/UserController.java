@@ -105,19 +105,22 @@ public class UserController {
 	        String title = request.getParameter("title");
 	        String author = request.getParameter("author");
 	        String content = request.getParameter("content");
+	        int uid=Integer.parseInt(request.getParameter("uid"));
 
 	        byte[] bytes = file.getBytes();
 	       Blob blob = new javax.sql.rowset.serial.SerialBlob(bytes);
-
+	       
+	       User user = us.viewuserbyid(uid);
 	        CreateBlog cb = new CreateBlog();
 	        cb.setTitle(title);
 	        cb.setAuthor(author);
 	        cb.setContent(content);
 	        cb.setImage(blob);
+	        cb.setUid(user);
 
 	        msg = cbs.Addblog(cb);
 	        System.out.println(msg);
-	        mv.setViewName("dashboard");
+	        mv.setViewName("viewAllblog");
 	        mv.addObject("message", msg);
 	    } catch (Exception e) {
 	        msg = e.getMessage();
@@ -128,44 +131,46 @@ public class UserController {
 	    return mv;
 	}
 	
+	
 	@PostMapping("addcomment")
-	public String addComment(@RequestParam int id, @RequestParam String comment,@RequestParam String name, HttpServletRequest request) {
-	    // Get the name from the request parameter
-		 String msg = null;
-		    
-		    ModelAndView mv = new ModelAndView();
-		    
-		    HttpSession session = request.getSession();
-		    
-		      mv.addObject("name", session.getAttribute("ename"));
-		      
-		     // int eid = (int) session.getAttribute("eid");
-		      
-		      try
-			   {
-			     String uname = request.getParameter("name");
-			     
-			     User emp = new User();
-			     
-			     
-			     emp.setName(uname);
+		public String addComment(@RequestParam int id, @RequestParam String comment,@RequestParam String name,@RequestParam int uid, HttpServletRequest request) {
+		    // Get the name from the request parameter
+			 String msg = null;
 			    
-			     msg = us.updateUser(emp);
-			      mv.setViewName("viewblogindetail");
-			      mv.addObject("message",msg);
-			   } catch(Exception e) {
-				   msg = e.getMessage();
-				     
-				     mv.setViewName("viewAllblog");
+			    ModelAndView mv = new ModelAndView();
+			    
+			    HttpSession session = request.getSession();
+			    
+			      mv.addObject("name", session.getAttribute("ename"));
+			      mv.addObject("userid",session.getAttribute("uid"));
+			     // int eid = (int) session.getAttribute("eid");
+			      
+			      try
+				   {
+			    	  String uname = request.getParameter("namme");
+			    	  
+			    	  
+			    	  User emp = new User();
+			    	  emp.setName(uname);
+			    	
+				     msg = us.updateUser(emp);
+				      mv.setViewName("viewblogindetail");
 				      mv.addObject("message",msg);
-			   }
-		
-		comment c = new comment();
-     c.setName(name);
-     c.setComment(comment);
-     cs.AddComment(id, c);
-     return "redirect:/viewblogindetail?id=" + id;
-	}
+				   } catch(Exception e) {
+					   msg = e.getMessage();
+					     
+					     mv.setViewName("viewAllblog");
+					      mv.addObject("message",msg);
+				   }
+			
+			comment c = new comment();
+	     c.setName(name);
+	     c.setComment(comment);
+	     c.setUid(uid);
+	     cs.AddComment(id, c);
+	     return "redirect:/viewblogindetail?id=" + id;
+		}
+
 	
 	
 	@PostMapping("login")
@@ -367,6 +372,31 @@ public class UserController {
 		 
 	 }
 	 
+	 @GetMapping("/viewAllblogsbyauthor")
+	 public ModelAndView viewAllBlogsByAuthor(@RequestParam(name = "author", required = false) String author, HttpServletRequest request) {
+	     ModelAndView mv = new ModelAndView();
+
+	     // Get ename from the session and set it as a default value for author
+	     HttpSession session = request.getSession();
+	     String ename = (String) session.getAttribute("ename");
+
+	     // Use ename as the default value if author is not present in the request
+	     author = (author != null) ? author : ename;
+
+	     // Add the author directly to the model without using "name" as the key
+	     mv.addObject("author", author);
+
+	     // Use the 'author' parameter from the URL
+	     List<CreateBlog> listauth = cbs.viewallblogbyauthor(author);
+	     mv.addObject("blog", listauth);
+	     mv.setViewName("viewAllblogsbyauthor");
+
+	     return mv;
+	 }
+
+
+
+	 
 	 @GetMapping("viewblogindetail")
 	 public ModelAndView viewblogindetail(@RequestParam("id") int id) {
 		 CreateBlog cb=as.viewallbyblogid(id);
@@ -451,7 +481,7 @@ public class UserController {
 	 }
 	 
 	 
-	 @GetMapping("viewallcommentsbyidadmin")
+	 @GetMapping("viewallcommentsbyidadmin")	
 	 public ModelAndView viewallcommentbyidadmin() {
 		 
 		 ModelAndView mv=new ModelAndView();

@@ -12,4 +12,5 @@ public interface CreateBlogService {
 	public CreateBlog viewallblogsbyid(int id);
 	void addCommentToPost(int Id, comment comment);
 	public CreateBlog getBlogWithComments(int id);
+	public List<CreateBlog> viewallblogbyauthor(String author);
 }

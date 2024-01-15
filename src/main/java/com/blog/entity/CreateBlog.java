@@ -9,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -26,6 +28,18 @@ public class CreateBlog {
 	 String author;
 	@Column(name="content",length = 10000)
 	 String content;
+	
+	@ManyToOne
+	@JoinColumn(name="user_id")
+	User uid;
+	
+	public User getUid() {
+		return uid;
+	}
+	public void setUid(User uid) {
+		this.uid = uid;
+	}
+
 	@Column(name="image")
 	 private Blob image;
 	
@@ -71,7 +85,7 @@ public class CreateBlog {
 	
 	@Override
 	public String toString() {
-	    return "CreateBlog[id=" + id + ", title=" + title + ", author=" + author + ", content=" + content + "]";
+	    return "CreateBlog[id=" + id + ", title=" + title + ", author=" + author + ", content=" + content + ", uid=" + uid +"]";
 	}
 
 	

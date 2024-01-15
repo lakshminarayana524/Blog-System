@@ -98,6 +98,7 @@
         <div class="comment-section">
         <form method="post" action="addcomment">
 		    <input type="hidden" id="name" name="name"  value="${ename}"  />
+		    <input type="hidden" id="uid" name="uid" value="${eid}">
 		    <input type="hidden" name="id" id="id" value="${blog.id}" />
             <input type="text" class="comment-input" placeholder="Add a comment" id="comment" name="comment">
             <button type="submit" class="submit-button">Submit</button>
@@ -106,6 +107,7 @@
         </div>
        <c:forEach items="${blog.comments}" var="comment">
     <div class="comment">
+    
     <p><b style="color: green;">${comment.name}</b>: ${comment.comment}</p>
     <!-- <a href='<c:url value="deletecomment/${comment.id}"></c:url>' style="color: red; text-decoration: none; margin-left: 10px;">Delete</a>-->
 	</div>

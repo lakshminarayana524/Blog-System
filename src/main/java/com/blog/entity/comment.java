@@ -26,6 +26,19 @@ public class comment {
 	 @ManyToOne
 	 @JoinColumn(name = "blog_id")
 	 CreateBlog blog;
+	 
+	 
+	 @Column(name="user_id")
+	 Integer uid;
+
+
+	public int getUid() {
+		return uid;
+	}
+
+	public void setUid(int uid) {
+		this.uid = uid;
+	}
 
 	public int getId() {
 		return id;
@@ -60,7 +73,7 @@ public class comment {
 	}
 	
 	public String toString(){
-		return "comment[id= " + id +  ", name= " + name +",  comment=" + comment + ", blog=" + blog+ "]";
+		return "comment[id= " + id +  ", name= " + name +",  comment=" + comment + ", blog=" + blog+ ", uid="+ uid+"]";
 	}
 	
 

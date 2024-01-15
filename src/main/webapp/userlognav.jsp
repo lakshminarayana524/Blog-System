@@ -164,6 +164,7 @@
                        
                      <div class="dropdown-content">
                         <a href="userprofile.jsp" > Hi,<span>${ename}</span></a>
+                        <a href="viewAllblogsbyauthor">My Blogs</a>
                         <a href="index.jsp" >Logout</a>
                     </div>
                 </li>

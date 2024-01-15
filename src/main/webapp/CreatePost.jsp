@@ -136,8 +136,9 @@
     </style>
 </head>
 <body>
-<%@ include file="userlognav.jsp" %>
+
 <div class="createpost-container">
+<%@ include file="userlognav.jsp" %>
     <header>
         <h1>Create a Blog Post</h1>
     </header>
@@ -146,9 +147,9 @@
         <label for="title">Title:</label>
         <input type="text" id="title" name="title" required>
 
-        <label for="author">Author:</label>
-        <input type="text" id="author" name="author" required>
-
+        <!--  <label for="author">Author:</label>-->
+        <input type="hidden" id="author" name="author" value="${ename}">
+		<input type="hidden" id="uid" name="uid" value="${eid}">
         <label for="content">Content:</label>
         <textarea id="content" name="content" rows="6" required></textarea>
 

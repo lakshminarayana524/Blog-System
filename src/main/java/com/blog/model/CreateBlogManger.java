@@ -44,6 +44,13 @@ public class CreateBlogManger  implements CreateBlogService{
 			return null;
 		}
 	}
+	
+	@Override
+	public List<CreateBlog> viewallblogbyauthor(String author) {
+	    return cr.findByAuthor(author);
+	}
+
+	
 
 	@Override
 	public void addCommentToPost(int Id, comment comment) {
@@ -68,6 +75,7 @@ public class CreateBlogManger  implements CreateBlogService{
 
         return blog;
 	}
+
 	
 	
 	
