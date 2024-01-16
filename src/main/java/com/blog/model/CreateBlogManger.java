@@ -45,9 +45,8 @@ public class CreateBlogManger  implements CreateBlogService{
 		}
 	}
 	
-	@Override
-	public List<CreateBlog> viewallblogbyauthor(String author) {
-	    return cr.findByAuthor(author);
+	public List<CreateBlog> viewallblogbyuidSortedByUid(int uid) {
+	    return cr.findByUidIdOrderByUidId(uid);
 	}
 
 	

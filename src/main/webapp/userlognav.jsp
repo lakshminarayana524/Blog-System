@@ -1,4 +1,4 @@
-   
+   <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -146,9 +146,9 @@
             <ul class="menu">
                 <li><a href="viewAllblog">Home</a></li>
                 <!-- Dropdown menu for Blog -->
-                <li class="dropdown">
-                    <a href="javascript:void(0)">Blog</a>
-                    <div class="dropdown-content">
+                <li class="dropdown"> 
+                     <a href="javascript:void(0)">Blog</a>
+                     <div class="dropdown-content">
                         <a href="CreatePost.jsp">Create a Post</a>
                         <a href="viewAllblog">All Blogs</a>
                     </div>
@@ -163,13 +163,20 @@
                             </div>
                        
                      <div class="dropdown-content">
-                        <a href="userprofile.jsp" > Hi,<span>${ename}</span></a>
-                        <a href="viewAllblogsbyauthor">My Blogs</a>
+                        <a href="userprofile.jsp" > Hi,<span>${eusername}</span></a>
+                        <a href="javascript:void(0)" onclick="viewMyBlogs(${eid})">My Blogs</a>
                         <a href="index.jsp" >Logout</a>
                     </div>
                 </li>
             </ul>
         </div>
+        <script>
+    function viewMyBlogs(uid) {
+        // Redirect to the controller with the uid parameter
+        window.location.href = "viewallblogmyuid" + uid;
+    }
+</script>
     </nav>
+    
 </body>
 </html>

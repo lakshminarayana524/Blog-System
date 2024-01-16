@@ -6,6 +6,7 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -43,8 +44,9 @@ public class CreateBlog {
 	@Column(name="image")
 	 private Blob image;
 	
-	 @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL)
-	 List<comment> comments;
+	@OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	List<comment> comments;
+
 	 
 	public List<comment> getComments() {
 		return comments;

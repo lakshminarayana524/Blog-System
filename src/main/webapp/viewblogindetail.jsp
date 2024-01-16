@@ -38,7 +38,7 @@
             height: auto;
         }
 
-        a {
+        button {
             display: inline-block;
             background-color: #4CAF50;
             color: #fff;
@@ -48,7 +48,7 @@
             margin-top: 20px;
         }
 
-        a:hover {
+        button:hover {
             background-color: #45a049;
         }
 
@@ -92,12 +92,12 @@
         <p>Author: ${blog.author}</p>
         <img src="displayproimage?id=${blog.id}" alt="Blog Image">
         <p>${blog.content}</p><br>
-        <a href="viewAllblog">Back</a>
+        <button onclick="goBack()">Back</button>
         
         <!-- Comment section -->
         <div class="comment-section">
         <form method="post" action="addcomment">
-		    <input type="hidden" id="name" name="name"  value="${ename}"  />
+		    <input type="hidden" id="name" name="name"  value="${eusername}"  />
 		    <input type="hidden" id="uid" name="uid" value="${eid}">
 		    <input type="hidden" name="id" id="id" value="${blog.id}" />
             <input type="text" class="comment-input" placeholder="Add a comment" id="comment" name="comment">
@@ -108,12 +108,25 @@
        <c:forEach items="${blog.comments}" var="comment">
     <div class="comment">
     
-    <p><b style="color: green;">${comment.name}</b>: ${comment.comment}</p>
+    <p><b style="color: green;"><label placeholder="${comment.name}"></b>: ${comment.comment}</p>
     <!-- <a href='<c:url value="deletecomment/${comment.id}"></c:url>' style="color: red; text-decoration: none; margin-left: 10px;">Delete</a>-->
 	</div>
 
-
+	
     </c:forEach>
     </div>
+    <script>
+    // Variable to store the previous URL
+   //	 var previousUrl = document.referrer || '/';
+
+    // Function to go back
+    function goBack() {
+        // Use the stored previous URL to navigate back
+        window.history.back();
+    }
+</script>
+
+
+    
 </body>
 </html>

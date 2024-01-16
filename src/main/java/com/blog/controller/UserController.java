@@ -120,6 +120,10 @@ public class UserController {
 
 	        msg = cbs.Addblog(cb);
 	        System.out.println(msg);
+	        
+//	        String refreshScript = "<script>location.reload(true);</script>";
+//	        mv.addObject("refreshScript", refreshScript);
+	        
 	        mv.setViewName("viewAllblog");
 	        mv.addObject("message", msg);
 	    } catch (Exception e) {
@@ -128,7 +132,9 @@ public class UserController {
 	        mv.setViewName("CreatePost");
 	        mv.addObject("message", msg);
 	    }
+	   // return new ModelAndView("redirect:/viewAllblog?refresh=true");
 	    return mv;
+
 	}
 	
 	
@@ -361,38 +367,36 @@ public class UserController {
 	 }
 	 
 	 @GetMapping("viewAllblog")
-	 public ModelAndView viewblog(){
-		 ModelAndView mv=new ModelAndView();
-			mv.setViewName("viewAllblog");
-		 List<CreateBlog> bloglist=cbs.viewAllBlog();
-		// ModelAndView mv=new ModelAndView("viewAllblog");
-		 //System.out.println(bloglist);
-		 mv.addObject("blogs",bloglist);
-		 return mv;
-		 
-	 }
-	 
-	 @GetMapping("/viewAllblogsbyauthor")
-	 public ModelAndView viewAllBlogsByAuthor(@RequestParam(name = "author", required = false) String author, HttpServletRequest request) {
+	 public ModelAndView viewblog(@RequestParam(name = "refresh", defaultValue = "false") boolean refresh) {
 	     ModelAndView mv = new ModelAndView();
-
-	     // Get ename from the session and set it as a default value for author
-	     HttpSession session = request.getSession();
-	     String ename = (String) session.getAttribute("ename");
-
-	     // Use ename as the default value if author is not present in the request
-	     author = (author != null) ? author : ename;
-
-	     // Add the author directly to the model without using "name" as the key
-	     mv.addObject("author", author);
-
-	     // Use the 'author' parameter from the URL
-	     List<CreateBlog> listauth = cbs.viewallblogbyauthor(author);
-	     mv.addObject("blog", listauth);
-	     mv.setViewName("viewAllblogsbyauthor");
+	     mv.setViewName("viewAllblog");
+//
+//	     if (refresh) {
+//	         // Add a check to prevent continuous refresh
+//	         String refreshScript = "<script>location.reload(true);</script>";
+//	         mv.addObject("refreshScript", refreshScript);
+//	     }
+	     
+	     List<CreateBlog> bloglist = cbs.viewAllBlog();
+	     mv.addObject("blogs", bloglist);
 
 	     return mv;
 	 }
+
+
+	 
+	 @GetMapping("viewallblogmyuid{uid}")
+	 public ModelAndView viewblogsbyuid(@PathVariable int uid) {
+	     // Retrieve blogs based on the uid path variable and sorted by user id
+	     List<CreateBlog> blogs = cbs.viewallblogbyuidSortedByUid(uid);
+
+	     ModelAndView mv = new ModelAndView();
+	     mv.addObject("blogs", blogs);
+	     mv.setViewName("viewblogbyuserid");
+
+	     return mv;
+	 }
+
 
 
 

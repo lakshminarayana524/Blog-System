@@ -5,6 +5,8 @@ import java.util.List;
 import com.blog.entity.CreateBlog;
 import com.blog.entity.comment;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 public interface CreateBlogService {
 
 	public String Addblog(CreateBlog cb);
@@ -12,5 +14,5 @@ public interface CreateBlogService {
 	public CreateBlog viewallblogsbyid(int id);
 	void addCommentToPost(int Id, comment comment);
 	public CreateBlog getBlogWithComments(int id);
-	public List<CreateBlog> viewallblogbyauthor(String author);
+	public List<CreateBlog> viewallblogbyuidSortedByUid(int uid);
 }

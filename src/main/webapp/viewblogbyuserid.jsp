@@ -5,8 +5,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    
     <title>Blog Display</title>
     <style>
         body {
@@ -77,18 +75,13 @@
             color:black;
         }
         
-        a:hover {
+        a:hover {	
             transform: scale(1.05);
         }
     </style>
-    
-    <!--  <c:if test="${not empty refreshScript}">
-        ${refreshScript}
-    </c:if>--> 
 </head>
 <body>
- 
-<%@ include file="userlognav.jsp" %>
+    <%@ include file="userlognav.jsp" %>
     <div>
         <c:forEach items="${blogs}" var="blog">
             <a href='<c:url value="viewblogwithcommentinuser?id=${blog.id}"></c:url>'>
@@ -99,7 +92,7 @@
                     <div class="blog-details">
                         <div class="blog-title">${blog.title}</div>
                         <div class="blog-author">${blog.author}</div>
-                        <p style>${blog.content}</p>
+                        <p>${blog.content}</p>
                         <!-- Add more details here -->
                     </div>
                 </div>

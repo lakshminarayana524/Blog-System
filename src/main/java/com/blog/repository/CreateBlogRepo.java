@@ -8,5 +8,7 @@ import com.blog.entity.CreateBlog;
 
 @Repository
 public interface CreateBlogRepo extends JpaRepository<CreateBlog, Integer> {
-    List<CreateBlog> findByAuthor(String author);
+	List<CreateBlog> findByUidIdOrderByUidId(int uid);
+
+
 }

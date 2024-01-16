@@ -148,7 +148,7 @@
         <input type="text" id="title" name="title" required>
 
         <!--  <label for="author">Author:</label>-->
-        <input type="hidden" id="author" name="author" value="${ename}">
+        <input type="hidden" id="author" name="author" value="${eusername}">
 		<input type="hidden" id="uid" name="uid" value="${eid}">
         <label for="content">Content:</label>
         <textarea id="content" name="content" rows="6" required></textarea>
