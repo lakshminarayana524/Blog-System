@@ -136,14 +136,15 @@
     </style>
 </head>
 <body>
+<%@ include file="userlognav.jsp" %>
 
 <div class="createpost-container">
-<%@ include file="userlognav.jsp" %>
+
     <header>
         <h1>Create a Blog Post</h1>
     </header>
 
-    <form method="post" action="insert-blog-post" enctype="multipart/form-data">
+    <form method="post" action="insert-blog-post" enctype="multipart/form-data" onsubmit="return validateForm();">
         <label for="title">Title:</label>
         <input type="text" id="title" name="title" required>
 
@@ -169,6 +170,21 @@
             <span>Post</span>
         </button>
     </form>
+    <script>
+function validateForm() {
+    var uid = document.getElementById("uid").value;
+    console.log("uid:", uid); // Add this line for debugging
+    if (!uid || uid.trim() === '') {
+        alert('Please login again. Something went wrong.');
+        return false; // Prevent form submission
+    }
+    return true; // Allow form submission
+}
+</script>
+
+
+
 </div>
+
 </body>
 </html>

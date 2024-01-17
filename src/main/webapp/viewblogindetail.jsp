@@ -1,11 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page contentType="text/html; charset=ISO-8859-1" isELIgnored="false"%> 
+<%@ taglib uri="jakarta.tags.core" prefix="c"%> 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c1" %>
-
-<!DOCTYPE html>
+ 
 <html>
 <head>
-    <meta charset="ISO-8859-1">
-    <title>Blog Details</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,7 +13,7 @@
         }
 
         .container {
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
             padding: 20px;
             background-color: #fff;
@@ -26,74 +24,81 @@
         h1 {
             font-size: 24px;
             color: #333;
+            margin-bottom: 10px;
         }
 
         p {
-            margin: 10px 0;
-            color: #444;
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 10px;
         }
 
         img {
             max-width: 100%;
             height: auto;
+            margin-bottom: 20px;
         }
 
         button {
-            display: inline-block;
             background-color: #4CAF50;
-            color: #fff;
-            padding: 10px 20px;
-            text-decoration: none;
+            color: white;
+            padding: 10px;
+            border: none;
             border-radius: 5px;
-            margin-top: 20px;
+            cursor: pointer;
         }
 
-        button:hover {
-            background-color: #45a049;
-        }
-
-        /* Add CSS for comment section */
         .comment-section {
             margin-top: 20px;
-            border-top: 1px solid #ccc;
-            padding-top: 20px;
         }
 
         .comment-input {
-            width: 90%;
+            width: 70%;
+            padding: 8px;
             border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-
-        .submit-button {
-            background-color: #4CAF50;
-            color: #fff;
-            padding: 10px 20px;
-            text-decoration: none;
             border-radius: 5px;
             margin-right: 10px;
         }
 
-        .view-comments-button {
+        .submit-button {
             background-color: #4CAF50;
-            color: #fff;
-            padding: 10px 20px;
-            text-decoration: none;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .comments {
+            margin-top: 20px;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+
+        .comment {
+            margin-bottom: 10px;
+        }
+
+        .comment p {
+            margin: 0;
+            padding: 5px;
+            background-color: #f2f2f2;
             border-radius: 5px;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>${blog.title}</h1>
-        <p>Author: ${blog.author}</p>
-        <img src="displayproimage?id=${blog.id}" alt="Blog Image">
-        <p>${blog.content}</p><br>
+
+
+<div class="container">
+    <h1>${blog.title}</h1>
+    <p>Author: ${blog.author}</p>
+    <img src="displayproimage?id=${blog.id}" alt="Blog Image"> 
+    <p>${blog.content}</p><br>
+    
         <button onclick="goBack()">Back</button>
-        
+        <hr>
         <!-- Comment section -->
         <div class="comment-section">
         <form method="post" action="addcomment">
@@ -105,16 +110,21 @@
             </form>
              <!--   <a href="viewallcomments?id=${comment.id}" class="view-comments-button">View All Comments</a>-->
         </div>
-       <c:forEach items="${blog.comments}" var="comment">
+        
+        
+       <div class="comments">
+    <div style="text-align:center;">Comments</div>
+    <c:forEach items="${blog.comments}" var="comment">
     <div class="comment">
-    
-    <p><b style="color: green;"><label placeholder="${comment.name}"></b>: ${comment.comment}</p>
-    <!-- <a href='<c:url value="deletecomment/${comment.id}"></c:url>' style="color: red; text-decoration: none; margin-left: 10px;">Delete</a>-->
+    <p><b style="color: green;">${comment.name}</b>: ${comment.comment}</p>
 	</div>
 
-	
+
     </c:forEach>
-    </div>
+</div>
+    <a href="viewallblogsadmin">Back</a>
+    
+</div>
     <script>
     // Variable to store the previous URL
    //	 var previousUrl = document.referrer || '/';

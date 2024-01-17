@@ -63,6 +63,17 @@
     <a href="viewallblogsadmin">Back</a>
     
 </div>
+<script>
+    // Variable to store the previous URL
+   //	 var previousUrl = document.referrer || '/';
+
+    // Function to go back
+    function goBack() {
+        // Use the stored previous URL to navigate back
+        window.history.back();
+    }
+</script>
+
 
 </body>
 </html>

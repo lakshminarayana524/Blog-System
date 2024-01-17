@@ -469,7 +469,7 @@ public class UserController {
 		 mv.addObject("blog",cb);
 		 return mv;*/
 	 
-	 @GetMapping("viewblogwithcommentinuser")
+	 @GetMapping("/viewblogwithcommentinuser")
 	 public ModelAndView viewblogwithcommentinuser(@RequestParam("id") int id) {
 		// Retrieve the blog and comment data by ID
 	     CreateBlog cb = cbs.getBlogWithComments(id);
@@ -521,6 +521,18 @@ public class UserController {
 		 as.deletepost(id);
 		 return"redirect:/viewallblogsadmin";
 	 }
+	 
+	 @GetMapping("/deleteuserpost/{id}")
+	 public String deleteuserpost(@PathVariable("id") int id, @RequestParam("uid") int uid, HttpServletRequest request) {
+	     ModelAndView mv = new ModelAndView();
+	     
+	     HttpSession session = request.getSession();
+	     mv.addObject("eid", session.getAttribute("eid"));
+	     as.deletepost(id);
+	     int eid = (int) session.getAttribute("eid");
+	     return "redirect:/viewallblogmyuid" + eid;
+	 }
+
 	 
 	 @GetMapping("deletecommentadmin/{id}")
 	 public String deletecommentadmin(@PathVariable("id") int id) {

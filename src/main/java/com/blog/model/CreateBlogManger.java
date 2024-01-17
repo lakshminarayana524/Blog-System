@@ -75,7 +75,21 @@ public class CreateBlogManger  implements CreateBlogService{
         return blog;
 	}
 
-	
+	@Override
+	public String deleteuserpost(int id) {
+		 Optional<CreateBlog> obj = cr.findById(id);
+	        String msg = null;
+
+	        if (obj.isPresent()) {
+	            CreateBlog blog = obj.get();
+	            cr.delete(blog);
+	            msg = "Post Deleted Successfully";
+	        } else {
+	            msg = "Post Not Found";
+	        }
+
+	        return msg;
+	}
 	
 	
 

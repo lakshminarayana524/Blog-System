@@ -16,6 +16,8 @@
 
         .container {
             display: flex;
+            flex-direction: row; /* Make the container a row */
+            justify-content: space-between; /* Space between elements */
             align-items: center;
             cursor: pointer;
             margin-bottom: 20px; /* Add margin to separate containers */
@@ -23,10 +25,11 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
             border-radius: 10px;
             padding: 20px;
-            margin-top:50px;
-            margin-left:50px;
-            margin-right:50px;
-            height:300px;
+            margin-top: 50px;
+            margin-left: 50px;
+            margin-right: 50px;
+            height: 300px;
+            width:80%;
         }
 
         .blog-image {
@@ -75,29 +78,93 @@
             color:black;
         }
         
-        a:hover {	
+        a:hover {
             transform: scale(1.05);
         }
+
+        /* Move the delete link to the right */
+        .delete-link {
+            margin-left: auto; /* Auto margin to push it to the right */
+        }
+
+        /* Style for the select and delete button */
+		.select-container {
+		    display: flex;
+		    align-items: center;
+		    justify-content: space-between;
+		    margin-top: 20px;
+		    padding-right: 20px; /* Fix the typo here */ 
+		    	margin-left: 1320px;
+		}
+		
+		select {
+		   
+		    margin-right: 10px;
+		    padding: 5px 10px;
+		}
+		
+		.delete-all-button {
+		    padding: 5px 10px;
+		    background-color: #ff0000;
+		    color: #fff;
+		    border: none;
+		    border-radius: 5px;
+		    cursor: pointer;
+		}
+
     </style>
 </head>
 <body>
     <%@ include file="userlognav.jsp" %>
-    <div>
-        <c:forEach items="${blogs}" var="blog">
-            <a href='<c:url value="viewblogwithcommentinuser?id=${blog.id}"></c:url>'>
-                <div class="container">
-                    <div class="blog-image">
-                        <img src="displayproimage?id=${blog.id}" alt="Blog Image" style="max-width: 100%; height: auto;">
-                    </div>
-                    <div class="blog-details">
-                        <div class="blog-title">${blog.title}</div>
-                        <div class="blog-author">${blog.author}</div>
-                        <p>${blog.content}</p>
-                        <!-- Add more details here -->
-                    </div>
-                </div>
-            </a>
-        </c:forEach>
+    <div class="select-container">
+        <select id="blogSelect">
+            <option value="">None</option> <!-- Add a default option -->
+            <c:forEach items="${blogs}" var="blog">
+                <option class="select-option" value="${blog.id}">${blog.title}</option>
+            </c:forEach>
+        </select>
+        <button class="delete-all-button" onclick="deleteBlog('${uid}', document.getElementById('blogSelect').value)">Delete </button>
     </div>
+    <div>
+        <c:choose>
+            <c:when test="${not empty blogs}">
+                <!-- Display blogs if available -->
+                <c:forEach items="${blogs}" var="blog">
+                    <a href='<c:url value="viewblogwithcommentinuser?id=${blog.id}"></c:url>'>
+                        <div class="container">
+                            <div class="blog-image">
+                                <img src="displayproimage?id=${blog.id}" alt="Blog Image">
+                            </div>
+                            <div class="blog-details">
+                                <div class="blog-title">${blog.title}</div>
+                                <div class="blog-author">${blog.author}</div>
+                                <p>${blog.content}</p>
+                                <!-- Add more details here -->
+                            </div>
+                        </div>
+                    </a>
+                </c:forEach>
+            </c:when>
+            <c:otherwise>
+                <!-- Display a message if no blogs are available -->
+                <p style="text-align:center; ">No blogs found. Please write a blog.</p>
+            </c:otherwise>
+        </c:choose>
+    </div>
+
+    <script>
+        function deleteBlog(uid, blogId) {
+            if (blogId === "") {
+                // Show a message if no blog is selected
+                alert("Please select a blog title to delete.");
+                return;
+            }
+
+            // You can perform the delete operation using AJAX or other methods
+            // For simplicity, you can redirect to a delete URL with the selected ID and UID
+            window.location.href = '<c:url value="/deleteuserpost/"></c:url>' + blogId + '?uid=' + uid;
+        }
+    </script>
+
 </body>
 </html>
