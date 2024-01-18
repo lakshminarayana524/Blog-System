@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog Display</title>
-    <style>
+     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f2f2f2;
@@ -29,7 +29,7 @@
             margin-left: 50px;
             margin-right: 50px;
             height: 300px;
-            width:80%;
+            width: 80%;
         }
 
         .blog-image {
@@ -50,13 +50,16 @@
             font-size: 24px;
             font-weight: bold;
             color: #333;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .blog-author {
             color: #666;
             margin: 10px 0;
         }
-        
+
         .back-button {
             margin-top: 20px;
             display: block;
@@ -67,7 +70,7 @@
             background-color: #4CAF50;
             color: #fff;
         }
-        
+
         .back-button:hover {
             background-color: #45a049;
         }
@@ -75,9 +78,9 @@
         /* Apply box shadow to the container and remove the underline from the link */
         a {
             text-decoration: none;
-            color:black;
+            color: black;
         }
-        
+
         a:hover {
             transform: scale(1.05);
         }
@@ -88,30 +91,33 @@
         }
 
         /* Style for the select and delete button */
-		.select-container {
-		    display: flex;
-		    align-items: center;
-		    justify-content: space-between;
-		    margin-top: 20px;
-		    padding-right: 20px; /* Fix the typo here */ 
-		    	margin-left: 1320px;
+        .select-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: absolute;
+            margin-top: 20px;
+            right: 20px;
+            z-index: 0;
+            text-overflow:ellipsis;
+        }
+		.select-option{
+			margin-left:300px
 		}
-		
-		select {
-		   
-		    margin-right: 10px;
-		    padding: 5px 10px;
-		}
-		
-		.delete-all-button {
-		    padding: 5px 10px;
-		    background-color: #ff0000;
-		    color: #fff;
-		    border: none;
-		    border-radius: 5px;
-		    cursor: pointer;
-		}
+        select {
+            margin-right: 10px;
+            padding: 8px; /* Adjust the padding for the select button */
+            width: 100px; /* Set a fixed width for the select button */
+        }
 
+        .delete-all-button {
+            padding: 8px; /* Adjust the padding for the delete button */
+            background-color: #ff0000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -125,12 +131,13 @@
         </select>
         <button class="delete-all-button" onclick="deleteBlog('${uid}', document.getElementById('blogSelect').value)">Delete </button>
     </div>
+    <br>
     <div>
         <c:choose>
             <c:when test="${not empty blogs}">
                 <!-- Display blogs if available -->
                 <c:forEach items="${blogs}" var="blog">
-                    <a href='<c:url value="viewblogwithcommentinuser?id=${blog.id}"></c:url>'>
+                    <a href='<c:url value="viewblogwithcommentbyuid?id=${blog.id}"></c:url>'>
                         <div class="container">
                             <div class="blog-image">
                                 <img src="displayproimage?id=${blog.id}" alt="Blog Image">

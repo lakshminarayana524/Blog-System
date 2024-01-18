@@ -2,11 +2,14 @@ package com.blog.controller;
 
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.http.HttpHeaders;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -28,6 +31,7 @@ import com.blog.model.CommentService;
 import com.blog.model.CreateBlogService;
 import com.blog.model.UserService;
 
+import io.micrometer.core.instrument.util.IOUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -59,12 +63,12 @@ public class UserController {
 	    ModelAndView mv = new ModelAndView();
 
 	    try {
-	        String name = request.getParameter("name");
+	        String name = request.getParameter("username");
 	        String email = request.getParameter("email");
 	        String pass = request.getParameter("pass");
 
 	        User emp = new User();
-	        emp.setName(name);
+	        emp.setUsername(name);
 	        emp.setEmail(email);
 	        emp.setPass(pass);
 
@@ -333,6 +337,27 @@ public class UserController {
 	    return mv;
 	  }
 	 
+	/* @GetMapping("/user-image/{username}")
+	    public ResponseEntity<byte[]> getUserImage(@PathVariable String username) {
+	        byte[] imageBytes = us.getUserImageByUsername(username);
+
+	        // If image is null, return default avatar image
+	        if (imageBytes == null) {
+	            // Load and serve default avatar image
+	            try {
+	                InputStream inputStream = getClass().getResourceAsStream("/static/path/to/default-avatar.jpg");
+	                imageBytes = IOUtils.toByteArray(inputStream);
+	            } catch (IOException e) {
+	                e.printStackTrace(); // Handle exception appropriately
+	            }
+	        }
+
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.setContentType(MediaType.IMAGE_JPEG);
+	        return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+	    }
+	 */
+	 
 	 @GetMapping("displayprofileimage")
 	 public ResponseEntity<byte[]> displayprofileimage(@RequestParam("id") int id) throws IOException, SQLException {
 	     User user = us.viewuserbyid(id);
@@ -484,6 +509,21 @@ public class UserController {
 	     return mv;
 	 }
 	 
+	 @GetMapping("/viewblogwithcommentbyuid")
+	 public ModelAndView viewblogwithcommentuserbyuid(@RequestParam("id") int id) {
+			// Retrieve the blog and comment data by ID
+		     CreateBlog cb = cbs.getBlogWithComments(id);
+		     //comment comments = as.viewallcommentbyid(id); // Assuming you have a list of comments
+
+		     // Create a ModelAndView and pass both the blog and comments to the view
+		     ModelAndView mv = new ModelAndView();
+		     mv.setViewName("viewblogindetailofuser");
+		     mv.addObject("blog", cb); // Add the blog to the model
+		     //mv.addObject("comment", comments); // Add the comments to the model
+
+		     return mv;
+		 }
+	 
 	 
 	 @GetMapping("viewallcommentsbyidadmin")	
 	 public ModelAndView viewallcommentbyidadmin() {
@@ -509,6 +549,21 @@ public class UserController {
 		 mv.addObject("blogadmin",cb);
 		 return mv;
 	 }
+	 
+	 @GetMapping("/profile/{username}")
+	 public ModelAndView userprofile(@PathVariable("username") String username) {
+	     ModelAndView mv = new ModelAndView("userprofile");
+
+	     // Retrieve user details based on the username
+	     User user = us.getUserByUsername(username);
+
+	     // Pass the user details to the view
+	     mv.addObject("user", user);
+
+	     return mv;
+	 }
+
+
 	 
 	 @GetMapping("deleteuser/{id}")
 	 public String deleteuser(@PathVariable("id") int id) {
@@ -545,6 +600,17 @@ public class UserController {
 		 
 		 as.deletecomment(id);
 		 return"redirect:/viewallpostdetails?id=" + id;
+	 }
+	 
+	 @GetMapping("deletecommentbyauthor/{commentid}")
+	 public String deletecommentbyuser(@PathVariable("commentid") int commentid,@RequestParam("id") int id,HttpServletRequest request) {
+//		 ModelAndView mv = new ModelAndView();
+//	     
+//	     HttpSession session = request.getSession();
+//	     mv.addObject("blogid", session.getAttribute("id"));
+		 as.deletecomment(commentid);
+		// int bid = (int) session.getAttribute("id");
+		 return"redirect:/viewblogwithcommentbyuid?id=" + id;
 	 }
 	 
 	

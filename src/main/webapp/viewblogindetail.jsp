@@ -97,9 +97,10 @@
     <img src="displayproimage?id=${blog.id}" alt="Blog Image"> 
     <p>${blog.content}</p><br>
     
-        <button onclick="goBack()">Back</button>
+     <button ><a style="text-decoration:none;color:white;" href='<c:url value="viewAllblog"></c:url>'>Back</a>	</button>
+        <!--<button onclick="goBack()">Back</button>
         <hr>
-        <!-- Comment section -->
+         Comment section -->
         <div class="comment-section">
         <form method="post" action="addcomment">
 		    <input type="hidden" id="name" name="name"  value="${eusername}"  />
@@ -107,10 +108,10 @@
 		    <input type="hidden" name="id" id="id" value="${blog.id}" />
             <input type="text" class="comment-input" placeholder="Add a comment" id="comment" name="comment">
             <button type="submit" class="submit-button">Submit</button>
-            </form>
-             <!--   <a href="viewallcomments?id=${comment.id}" class="view-comments-button">View All Comments</a>-->
+        </form>
+             
         </div>
-        
+        <!--   <a href="viewallcomments?id=${comment.id}" class="view-comments-button">View All Comments</a>-->
         
        <div class="comments">
     <div style="text-align:center;">Comments</div>

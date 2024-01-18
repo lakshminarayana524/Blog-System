@@ -4,6 +4,8 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" hrefhttps://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
     <script type="text/javascript" src="js/login.js"></script>
 </head>
 <body>
@@ -24,9 +26,9 @@
                 <h1>Sign in</h1>
                 
                 <div class="social-container">
-                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social"><i class="ti-facebook"></i></a>
+                    <a href="#" class="social"><i class="fab fa-google-plus"></i></a>
+                    <a href="#" class="social"><i class="fab fa-linkedin"></i></a>
                 </div>
                 <span>or use your account</span>
                 <input type="email" name="email" placeholder="Email" id="email" required />

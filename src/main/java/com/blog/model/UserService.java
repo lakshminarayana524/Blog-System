@@ -9,5 +9,8 @@ public interface UserService {
 	public User checklogin(String email,String pass);
 	public User viewuserbyid(int id);
 	public String updateUser(User u);
+	public User getUserByUsername(String username);
+    byte[] getUserImageByUsername(String username);
+
 	
 }

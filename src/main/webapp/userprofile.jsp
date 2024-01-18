@@ -75,6 +75,9 @@
             left: 10px;
             color: #007BFF;
         }
+       .form-group i{
+        	color:#FF4B2B;
+        }
         input {
             width: 88%;
             padding: 10px;
@@ -83,7 +86,7 @@
             padding-left: 40px;
         }
         button {
-            background-color: #007BFF;
+            background-color: #FF4B2B;
             color: #fff;
             padding: 10px 20px;
             border: none;
@@ -93,7 +96,7 @@
             margin: 0 auto;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #E63F20;
         }
     </style>
 </head>
@@ -103,34 +106,10 @@
     <div class="userprofile-container">
         <div class="user-avatar-container">
              <div class="user-avatar">
-    <%
-   /* String displayprofileimage = (String) request.getAttribute("displayprofileimage");
-    User emp = (User) request.getAttribute("emp");
-
-    if ("image".equals(displayprofileimage) && emp != null) {
-        Blob imageBlob = emp.getImage();
-        */
-       // if (imageBlob != null && imageBlob.length() > 0) {
-         //   byte[] imageBytes = imageBlob.getBytes(1, (int) imageBlob.length());
-%>
 			 <img src="displayprofileimage?id=${eid}" alt="User Image" >
-            <!-- <img src="data:image/jpeg;base64, <%//= new String(Base64.getEncoder().encode(imageBytes), StandardCharsets.UTF_8) %>" alt="User Image">
-<%
-     //   } else {
-%>
-           <!--  <img src="./imgs/profile.png" alt="Default Profile1 Picture" class="user-avatar-default">-->
-<%
-       // }
-   // } else {
-%>
-      <!--  ->  <img src="./imgs/profile.png" alt="Default Profile2 Picture" class="user-avatar-default">-->
-<%
-   // }
-%>
-
-		</div>
-		
+      		</div>
         </div>
+        
         <div class="user-details">
             <h1>My Profile</h1>
             <form class="profile-form" method="post" action="update" enctype="multipart/form-data">
@@ -183,4 +162,3 @@
 </div>
 </body>
 </html>
-

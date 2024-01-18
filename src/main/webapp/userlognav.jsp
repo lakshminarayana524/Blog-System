@@ -2,6 +2,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+    <base href="${pageContext.request.contextPath}/">
+    <!-- Other head elements -->
+
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!-- Include Font Awesome CSS for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -15,7 +20,7 @@
         }
 
         /* Body styles */
-        body {
+        .bodynav {
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
             position:fixes	;
@@ -122,24 +127,24 @@
             display: block;
         }
 
-        .logout-button {
+       /* .logout-button {
             background-color: #6a6262; /* Red button background color */
-            color: #d2c7c7; /* Text color */
-            border: none;
+         /*   color: #d2c7c7; /* Text color */
+         /*   border: none;
             padding: 10px 20px; /* Adjust the padding as needed */
-            border-radius: 0; /* Rounded corners */
-            font-weight: bold;
+           /* border-radius: 0; /* Rounded corners */
+            /*font-weight: bold;
             text-transform: uppercase; /* Convert text to uppercase */
-            cursor: pointer;
+            /*cursor: pointer;
             transition: background-color 0.3s;
         }
 
         .logout-button:hover {
             background-color: #ffffff; /* Change background color on hover */
-        }
+        /*}*/
     </style>
 </head>
-<body>
+<body class="bodynav">
     <nav class="navbar">
         <div class="containernav">
             <a href="viewAllblog" class="logo">Blog Guru</a>
@@ -153,8 +158,8 @@
                         <a href="viewAllblog">All Blogs</a>
                     </div>
                 </li>
-                <li><a href="about.jsp">About</a></li>
                 <li><a href="contact.jsp">Contact</a></li>
+                <li><a href="about.jsp">About</a></li>
                  <li class="dropdown">
                    
                           
@@ -163,7 +168,7 @@
                             </div>
                        
                      <div class="dropdown-content">
-                        <a href="userprofile.jsp" > Hi,<span>${eusername}</span></a>
+						<a href="${pageContext.request.contextPath}/profile/${eusername}" id="usernameLink">Hi, <span>${eusername}</span></a>
                         <a href="javascript:void(0)" onclick="viewMyBlogs(${eid})">My Blogs</a>
                         <a href="index.jsp" >Logout</a>
                     </div>
@@ -171,6 +176,14 @@
             </ul>
         </div>
         <script>
+        var usernameLink = document.getElementById("usernameLink");
+
+        // If the username link does not exist, show a pop-up message
+        if (!usernameLink) {
+            alert("Username not found. Please try to relogin.");
+        }
+
+        
     function viewMyBlogs(uid) {
         // Redirect to the controller with the uid parameter
         window.location.href = "viewallblogmyuid" + uid;

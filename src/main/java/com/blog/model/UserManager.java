@@ -1,8 +1,11 @@
 package com.blog.model;
 
+import java.sql.SQLException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+//import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 
 import com.blog.entity.User;
 import com.blog.repository.UserRepo;
@@ -38,9 +41,34 @@ public class UserManager implements UserService {
 		    
 	}
 	
+	 @Override
+	    public User getUserByUsername(String username) {
+	        // Use the repository to find the user by username
+	        return ur.findByUsername(username);
+	               // .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+	    }
+	
+	 
+	   @Override
+	    public byte[] getUserImageByUsername(String username) {
+	        User user = ur.findByUsername(username);
+
+	        if (user != null && user.getImage() != null) {
+	            try {
+	                return user.getImage().getBytes(1, (int) user.getImage().length());
+	            } catch (SQLException e) {
+	                e.printStackTrace(); // Handle exception appropriately
+	            }
+	        }
+
+	        return null;
+	    }
+	 
 	public String updateUser(User u) {
 		ur.save(u);
 		return "Employee Updated";
 	}
+
+	
 }
 
