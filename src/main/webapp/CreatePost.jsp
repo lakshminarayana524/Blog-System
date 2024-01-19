@@ -15,24 +15,24 @@
         .createpost-container {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
+           /* align-items: center;
+            justify-content: center;*/
             min-height: 100vh;
             background-color: #f7f7f7;
         }
 
         header {
-            background-color: #ff6f61;
+            background-color: #ff483f;
             color: #fff;
             padding: 0px;
             text-align: center;
             margin-bottom: 20px;
-            width: 100%;
+            width: auto;
             box-sizing: border-box;
         }
 
         header:hover {
-            background-color: #ff483f;
+            background-color: #ff6f61;
         }
 
         form {
@@ -40,7 +40,7 @@
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-            text-align: center;
+            /*text-align: center;*/
             max-width: 450px;
             width: 100%;
             margin: 0 auto;
@@ -54,6 +54,11 @@
         label, input, textarea {
             display: block;
             margin-bottom: 15px;
+            
+        }
+        
+        label{
+        	padding:15px;	
         }
 
         input[type="text"],

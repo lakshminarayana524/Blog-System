@@ -7,6 +7,7 @@ import java.net.http.HttpHeaders;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,11 +24,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.blog.entity.Admin;
+import com.blog.entity.Contact;
 import com.blog.entity.CreateBlog;
 import com.blog.entity.User;
 import com.blog.entity.comment;
 import com.blog.model.AdminService;
 import com.blog.model.CommentService;
+import com.blog.model.ContactService;
 import com.blog.model.CreateBlogService;
 import com.blog.model.UserService;
 
@@ -50,6 +53,9 @@ public class UserController {
 	
 	@Autowired
 	CommentService cs;
+	
+	@Autowired
+	ContactService cos;
 	
 	@GetMapping("/")
 	public String main()
@@ -181,7 +187,36 @@ public class UserController {
 	     return "redirect:/viewblogindetail?id=" + id;
 		}
 
-	
+	@PostMapping("AddContact")
+	public ModelAndView AddContact(HttpServletRequest request) {
+		String msg = null;
+	    ModelAndView mv = new ModelAndView();
+
+	    try {
+	       String  name = request.getParameter("name");
+	       String email = request.getParameter("email");
+	         String message = request.getParameter("message");
+
+	        Contact emp = new Contact();
+	        emp.setName(name);
+	        emp.setEmail(email);
+	        emp.setMessage(message);
+
+	       
+
+	        msg = cos.AddContact(emp);
+
+	        mv.setViewName("dashboard");
+	        mv.addObject("message", msg);
+	    } catch (Exception e) {
+	        msg = "Invalid Register";
+	        mv.setViewName("Contact");
+	        mv.addObject("message", msg);
+	        request.setAttribute("errorMessage", "Invalid Contact. Please try again.");
+	    }
+
+	    return mv;
+	}
 	
 	@PostMapping("login")
 	public ModelAndView checklogin(HttpServletRequest request) {
@@ -275,7 +310,7 @@ public class UserController {
 		        }
 	
 		      msg = us.updateUser(emp);
-		      mv.setViewName("dashboard");
+		      mv.setViewName("viewAllblog");
 		      mv.addObject("message",msg);
 		      
 		   // In your controller
@@ -486,6 +521,26 @@ public class UserController {
 	     //mv.addObject("comment", comments); // Add the comments to the model
 
 	     return mv;
+	 }
+	 
+	 @GetMapping("/viewallmsg")
+	 public ModelAndView viewallmsg() {
+		 ModelAndView mv=new ModelAndView();
+		  mv.setViewName("viewallcontact");
+///*
+//	     if (refresh) {
+//	         // Add a check to prevent continuous refresh
+//	         String refreshScript = "<script>location.reload(true);</script>";
+//	         mv.addObject("refreshScript", refreshScript);
+//	     }
+	     
+	     List<Contact> bloglist = as.viewallmsg();
+	     mv.addObject("contact", bloglist);
+
+	     return mv;
+		 
+		
+		 
 	 }
 
 		 /*		 CreateBlog cb=as.viewallbyblogid(id);

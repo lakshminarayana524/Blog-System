@@ -63,7 +63,7 @@
 </head>
 <body>
 <%@ include file="userlognav.jsp"%>
-    <form action="submitContact" method="post">
+    <form action="AddContact" method="post">
         <h1>Contact Us</h1>
         <label for="name">Your Name:</label>
         <input type="text" id="name" name="name" required>

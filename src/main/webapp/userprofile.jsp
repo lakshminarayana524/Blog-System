@@ -106,7 +106,14 @@
     <div class="userprofile-container">
         <div class="user-avatar-container">
              <div class="user-avatar">
-			 <img src="displayprofileimage?id=${eid}" alt="User Image" >
+			<c:choose>
+        <c:when test="${not empty image}">
+            <img src="displayprofileimage?id=${eid}">
+        </c:when>
+        <c:otherwise>
+            <img src="imgs/profile.png" >
+        </c:otherwise>
+    </c:choose>
       		</div>
         </div>
         

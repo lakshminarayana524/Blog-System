@@ -53,6 +53,7 @@
             <li><a href="viewallblogsadmin">Posts</a></li>
             <li><a class="nav-link active" href="viewalluser">Users</a></li>
             <li><a href="viewallcommentsbyidadmin">Comments</a></li>
+			<li><a href="viewallmsg">Messages</a></li>
             <li><a href="#">Settings</a></li>
             <li><a href="index.jsp">Logout</a></li>
         </ul>

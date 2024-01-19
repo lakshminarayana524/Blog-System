@@ -7,11 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.blog.entity.Admin;
+import com.blog.entity.Contact;
 import com.blog.entity.CreateBlog;
 import com.blog.entity.User;
 import com.blog.entity.comment;
 import com.blog.repository.AdminRepo;
 import com.blog.repository.CommentRepo;
+import com.blog.repository.ContactRepo;
 import com.blog.repository.CreateBlogRepo;
 import com.blog.repository.UserRepo;
 
@@ -29,6 +31,9 @@ public class AdminManager implements AdminService{
 	
 	@Autowired
 	CommentRepo cr;
+	
+	@Autowired
+	ContactRepo cor;
 	
 	@Override
 	public Admin checkadminlogin(String email, String pass) {
@@ -93,6 +98,11 @@ public class AdminManager implements AdminService{
 	@Override
 	public List<comment> ViewallComments() {
 		return cr.findAll();
+	}
+	
+	@Override
+	public List<Contact> viewallmsg() {
+		return cor.findAll();
 	}
 
 	@Override
@@ -167,6 +177,8 @@ public class AdminManager implements AdminService{
 		System.out.println(count);
 		return count;
 	}
+
+	
 
 	
 	

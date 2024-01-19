@@ -48,7 +48,7 @@
 </head>
 <body>
 <%@ include file="adminnav.jsp" %>
-<h3 class="text-center text-light pt-3"> All Messages</h3>
+<h3 class="text-center text-light pt-3">View All Employees</h3>
 
 <div class="container p-4 text-light">
     <table class="table table-bordered table-striped table-hover table-responsive text-center">
@@ -57,20 +57,17 @@
             <th>ID</th>
             <th>NAME</th>
             <th>EMAIL ID</th>
-            <th>CONTACT NO</th>
-            <th>Actions</th>
+            <th>Message</th>
         </tr>
         </thead>
         <tbody class="text-light">
-        <c:forEach items="${userdata}" var="user">
+        <c:forEach items="${contact}" var="c">
             <tr class="text-light">
-                <td><c:out value="${user.id}" /></td>
-                <td><c:out value="${user.username}" /></td>
-                <td><c:out value="${user.email}" /></td>
-                <td><c:out value="${user.contactno}" /></td>
-                <td><a href='<c:url value="viewalluserdetails?id=${user.id}"></c:url>'>View</a><br>
-                <a href='<c:url value="deleteuser/${user.id}"></c:url>'>Delete</a>
-                </td>
+                <td><c:out value="${c.id}" /></td>
+                <td><c:out value="${c.name}" /></td>
+                <td><c:out value="${c.email}" /></td>
+                <td><c:out value="${c.message}" /></td>
+                
             </tr>
         </c:forEach>
         </tbody>

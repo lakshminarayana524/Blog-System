@@ -1,11 +1,10 @@
-   <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
 
     <base href="${pageContext.request.contextPath}/">
     <!-- Other head elements -->
-
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!-- Include Font Awesome CSS for icons -->
@@ -16,14 +15,12 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            
         }
 
         /* Body styles */
         .bodynav {
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
-            position:fixes	;
         }
 
         /* Navbar styles */
@@ -50,7 +47,7 @@
             font-size: 24px;
             font-weight: bold;
             color: #000000;
-            margin-right:300px;
+            margin-right: 300px;
             order: 1; /* Moves the logo to the leftmost position */
         }
 
@@ -60,7 +57,7 @@
             padding: 0;
             margin: 0;
             display: flex;
-            justify-content:space-around; /* Add this line to space menu elements evenly */
+            justify-content: space-around; /* Add this line to space menu elements evenly */
             align-items: center;
             order: 2; /* Moves the menu to the right */
         }
@@ -85,14 +82,34 @@
         }
 
         /* Avatar icon styles */
+        /* Add this CSS for image styling within the avatar */
+        #avatar img {
+            width: 100%; /* Make sure the image takes up the entire space */
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        /* Style the avatar container */
         #avatar {
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 50px; /* Increase the size of the icon */
-            height: 50px; /* Increase the size of the icon */
+            width: 50px; /* Width and height can be adjusted */
+            height: 50px;
             border-radius: 50%;
             background-color: #c9c0c0; /* Add a background color for the circular border */
+            overflow: hidden; /* Hide overflow to ensure a perfect circle */
+            position: relative;
+        }
+
+        /* Style the default avatar icon if no image is available */
+        #avatar .fa-user {
+            font-size: 23px;
+            color: #fff; /* Color of the default avatar icon */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
         /* Dropdown menu styles */
@@ -127,21 +144,29 @@
             display: block;
         }
 
-       /* .logout-button {
-            background-color: #6a6262; /* Red button background color */
-         /*   color: #d2c7c7; /* Text color */
-         /*   border: none;
-            padding: 10px 20px; /* Adjust the padding as needed */
-           /* border-radius: 0; /* Rounded corners */
-            /*font-weight: bold;
-            text-transform: uppercase; /* Convert text to uppercase */
-            /*cursor: pointer;
+        /* Adjust the styles for the profile link */
+        .dropdown-content #usernameLink {
+            display: block;
+            padding: 12px 16px;
+            text-decoration: none;
+            color: black;
             transition: background-color 0.3s;
         }
 
-        .logout-button:hover {
-            background-color: #ffffff; /* Change background color on hover */
-        /*}*/
+        /* Add hover effect for the profile link */
+        .dropdown-content #usernameLink:hover {
+            background-color: #f4f4f4;
+        }
+
+        /* Hide the default avatar icon when an image is present */
+        #avatar .fa-user {
+            display: none;
+        }
+
+        /* Display dropdown when hovering over the parent */
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
     </style>
 </head>
 <body class="bodynav">
@@ -161,13 +186,19 @@
                 <li><a href="contact.jsp">Contact</a></li>
                 <li><a href="about.jsp">About</a></li>
                  <li class="dropdown">
-                   
-                          
-                            <div id="avatar">
-                                <i class="fa fa-user" style="font-size: 23px;"></i>
-                            </div>
-                       
-                     <div class="dropdown-content">
+                    <div id="avatar">
+    <c:choose>
+        <c:when test="${not empty image}">
+            <img src="displayprofileimage?id=${eid}">
+        </c:when>
+        <c:otherwise>
+            <img src="imgs/profile.png" >
+        </c:otherwise>
+    </c:choose>
+   
+</div>
+                    
+                    <div class="dropdown-content">
 						<a href="${pageContext.request.contextPath}/profile/${eusername}" id="usernameLink">Hi, <span>${eusername}</span></a>
                         <a href="javascript:void(0)" onclick="viewMyBlogs(${eid})">My Blogs</a>
                         <a href="index.jsp" >Logout</a>
@@ -176,20 +207,19 @@
             </ul>
         </div>
         <script>
-        var usernameLink = document.getElementById("usernameLink");
+            var usernameLink = document.getElementById("usernameLink");
 
-        // If the username link does not exist, show a pop-up message
-        if (!usernameLink) {
-            alert("Username not found. Please try to relogin.");
-        }
+            // If the username link does not exist, show a pop-up message
+            if (!usernameLink) {
+                alert("Username not found. Please try to relogin.");
+            }
 
-        
-    function viewMyBlogs(uid) {
-        // Redirect to the controller with the uid parameter
-        window.location.href = "viewallblogmyuid" + uid;
-    }
-</script>
-    </nav>
-    
-</body>
-</html>
+            function viewMyBlogs(uid) {
+                // Redirect to the controller with the uid parameter
+                window.location.href = "viewallblogmyuid" + uid;
+            }
+        </script>
+            </nav>
+            
+        </body>
+        </html>
