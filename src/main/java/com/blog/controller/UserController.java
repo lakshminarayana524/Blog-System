@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 //import org.springframework.web.bind.annotation.RequestMapping;
 //import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.blog.entity.Admin;
 import com.blog.entity.Contact;
@@ -269,13 +270,11 @@ public class UserController {
 
 	
 	@PostMapping("update")
-	  public ModelAndView updateaction(HttpServletRequest request, @RequestParam("contact") String contact,@RequestParam("image") MultipartFile file) throws IOException, SQLException
-	  {
+	public ModelAndView updateAction(HttpServletRequest request, @RequestParam("contact") String contact, @RequestParam("image") MultipartFile file) throws IOException, SQLException {
 	    String msg = null;
-	    
 	    ModelAndView mv = new ModelAndView();
-        HttpSession session = request.getSession();
-	    
+	    HttpSession session = request.getSession();
+
 	    mv.addObject("id", session.getAttribute("eid"));
 	    mv.addObject("name", session.getAttribute("ename"));
 	    mv.addObject("username", session.getAttribute("eusername"));
@@ -283,53 +282,52 @@ public class UserController {
 	    mv.addObject("contact", session.getAttribute("econtact"));
 	    mv.addObject("pass", session.getAttribute("epass"));
 	    mv.addObject("image", session.getAttribute("image"));
-	    
-	    int id = (int) session.getAttribute("eid");
-	    try
-		   {
-		     String name = request.getParameter("name");
-		     String username = request.getParameter("username");
-		     String contact1 = request.getParameter("contact");
-		     String email = request.getParameter("email");
-		     String pass = request.getParameter("pass");
-		     	     
-		     byte[] bytes = file.getBytes();
-		     
-		     User emp = new User();
-		      emp.setId(id);
-		      emp.setName(name);
-		      emp.setUsername(username);
-		      emp.setContactno(contact1);
-		      emp.setEmail(email);
-		      emp.setPass(pass);
-		      
-		      
-		      if (bytes.length > 0) {
-		            Blob blob = new javax.sql.rowset.serial.SerialBlob(bytes);
-		            emp.setImage(blob);
-		        }
-	
-		      msg = us.updateUser(emp);
-		      mv.setViewName("viewAllblog");
-		      mv.addObject("message",msg);
-		      
-		   // In your controller
-		      if (msg.equals("Image is null")) {
-		          // Set a flag or message to indicate that the image is null
-		          mv.addObject("imgmsg", "Image is null");
-		      }
 
-		     
-		   }
-		   catch(Exception e)
-		   {
-		     msg = e.getMessage();
-		     
-		     mv.setViewName("login");
-		      mv.addObject("message",msg);
-		   }
+	    int id = (int) session.getAttribute("eid");
+
+	    try {
+	        String name = request.getParameter("name");
+	        String username = request.getParameter("username");
+	        String contact1 = request.getParameter("contact");
+	        String email = request.getParameter("email");
+	        String pass = request.getParameter("pass");
+
+	        User emp = new User();
+	        emp.setId(id);
+	        emp.setName(name);
+	        emp.setUsername(username);
+	        emp.setContactno(contact1);
+	        emp.setEmail(email);
+	        emp.setPass(pass);
+
+	        // Check if the file content is present before processing it
+	        if (file != null && file.getBytes().length > 0) {
+	            byte[] bytes = file.getBytes();
+	            Blob blob = new javax.sql.rowset.serial.SerialBlob(bytes);
+	            emp.setImage(blob);
+	        }
+
+	        msg = us.updateUser(emp);
+
+	        // Set a flag or message to indicate that the image is not provided
+	        if (msg.equals("Image is null")) {
+	            mv.addObject("imgmsg", "Image is not provided");
+	        }
+
+	        // Redirect to the userprofile controller with the username parameter
+	        return new ModelAndView("redirect:/profile/" + username);
+
+	    } catch (Exception e) {
+	        msg = e.getMessage();
+	        mv.setViewName("login");
+	        mv.addObject("message", msg);
+	    }
 	    return mv;
-	  }
+	}
+	
+
+
+
 	
 	 @GetMapping("loghome")
 	  public ModelAndView loghome(HttpServletRequest request)
@@ -353,7 +351,7 @@ public class UserController {
 	    
 	    HttpSession session = request.getSession();
 	    
-	    mv.setViewName("userprofile");
+	    mv.setViewName("userprofileedit");
 	    
 	    mv.addObject("eid", session.getAttribute("eid"));
 	    mv.addObject("ename", session.getAttribute("ename"));
@@ -617,6 +615,37 @@ public class UserController {
 
 	     return mv;
 	 }
+	 
+	 @GetMapping("/profile/{username}/update")
+	 public ModelAndView userprofileedit(@PathVariable("username") String username) {
+	     ModelAndView mv = new ModelAndView("userprofileedit");
+
+	     // Retrieve user details based on the username
+	     User user = us.getUserByUsername(username);
+
+	     // Pass the user details to the view
+	     mv.addObject("user", user);
+
+	     return mv;
+	 }
+	 
+	 @GetMapping("/author/{authorname}")
+	 public ModelAndView blogauthor(@PathVariable("authorname") String username) {
+	     ModelAndView mv = new ModelAndView();
+
+	     // Retrieve user details based on the user ID
+	     User user = us.getUserByUsername(username);
+	     mv.addObject("user", user);
+
+	     // Retrieve all blogs by the user ID
+	     List<CreateBlog> blogs = cbs.viewallblogbyauthor(username);
+	     mv.addObject("blogs", blogs);
+
+	     mv.setViewName("profile");
+	     return mv;
+	 }
+
+
 
 
 	 

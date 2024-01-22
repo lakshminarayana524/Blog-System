@@ -4,6 +4,7 @@
  
 <html>
 <head>
+<base href="${pageContext.request.contextPath}/">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -47,7 +48,29 @@
             border-radius: 5px;
             cursor: pointer;
         }
-
+		
+		a{
+			text-decoration:none;
+			color:white;
+		}
+		/* Add this style in your existing style section */
+		#usernameLink:hover {
+		    color: blue; /* Change color on hover */
+		    text-decoration: underline; /* Underline on hover */
+		    cursor: pointer;
+		}
+		
+		#usernameLink::after {
+		    content: " (Click here to see the author's profile)"; /* Message after the author's name */
+		    font-size: 14px;
+		    color: #888;
+		}
+		
+		#usernameLink:hover::after {
+		    color: blue; /* Change color on hover */
+		}
+				
+		
         .comment-section {
             margin-top: 20px;
         }
@@ -93,11 +116,14 @@
 
 <div class="container">
     <h1>${blog.title}</h1>
-    <p>Author: ${blog.author}</p>
+    <p>Author: <a href="${pageContext.request.contextPath}/author/${blog.author}" style="color:black" id="usernameLink">${blog.author}</a></p>
     <img src="displayproimage?id=${blog.id}" alt="Blog Image"> 
     <p>${blog.content}</p><br>
     
-     <button ><a style="text-decoration:none;color:white;" href='<c:url value="viewAllblog"></c:url>'>Back</a>	</button>
+     <button>
+	    <a  href='<c:url value="viewAllblog"></c:url>'>Back</a>
+	</button>
+
         <!--<button onclick="goBack()">Back</button>
         <hr>
          Comment section -->
@@ -123,13 +149,17 @@
 
     </c:forEach>
 </div>
-    <a href="viewallblogsadmin">Back</a>
-    
+  
 </div>
     <script>
-    // Variable to store the previous URL
-   //	 var previousUrl = document.referrer || '/';
+    var usernameLink = document.getElementById("usernameLink");
 
+    // If the username link does not exist, show a pop-up message
+    if (!usernameLink) {
+        alert("Username not found. Please try to relogin.");
+    }
+
+    
     // Function to go back
     function goBack() {
         // Use the stored previous URL to navigate back

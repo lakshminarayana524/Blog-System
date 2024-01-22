@@ -23,7 +23,7 @@ public class CreateBlog {
 	@Column(name="id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY )
 	 int id;
-	@Column(name = "title")
+	@Column(name = "title",unique = true)
 	 String title;
 	@Column(name="author")
 	 String author;

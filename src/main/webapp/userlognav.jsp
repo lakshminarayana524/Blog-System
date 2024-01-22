@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+	
     <base href="${pageContext.request.contextPath}/">
     <!-- Other head elements -->
 
@@ -189,10 +189,10 @@
                     <div id="avatar">
     <c:choose>
         <c:when test="${not empty image}">
-            <img src="displayprofileimage?id=${eid}">
+            <img src="displayprofileimage?id=${eid}" alt="profile image">
         </c:when>
         <c:otherwise>
-            <img src="imgs/profile.png" >
+            <img src="imgs/profile.png" alt="default profile image">
         </c:otherwise>
     </c:choose>
    
