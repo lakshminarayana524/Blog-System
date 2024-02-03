@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +11,7 @@
         }
 
         /* Body styles */
-        body {
+        .bodynav {
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
         }
@@ -24,8 +23,8 @@
             padding: 10px 0;
         }
 
-        /* Container styles */
-        .container {
+        /* containernavv styles */
+        .containernavv {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -44,31 +43,31 @@
             order: 1; /* Moves the logo to the leftmost position */
         }
 
-        /* Menu styles */
-        .menu {
+        /* menunavv styles */
+        .menunavv {
             list-style: none;
             padding: 0;
             margin: 0;
             display: flex;
-            order: 2; /* Moves the menu to the right */
+            order: 2; /* Moves the menunavv to the right */
         }
 
-        .menu li {
+        .menunavv li {
             margin-right: 70px;
         }
 
-        .menu li:last-child {
+        .menunavv li:last-child {
             margin-right: 0;
         }
 
-        .menu a {
+        .menunavv a {
             text-decoration: none;
-            color: black; /* Change menu link color to black */
+            color: black; /* Change menunavv link color to black */
             font-weight: bold;
             transition: color 0.3s;
         }
 
-       .menu a:hover {
+       .menunavv a:hover {
     color: rgb(46, 213, 0); /* Vibrant green color */
 }
 
@@ -96,13 +95,13 @@
             color: #e3f6df; /* Text color for the link */
         }
 
-        /* Dropdown menu styles */
-        .dropdown {
+        /* dropdownnavv menunavv styles */
+        .dropdownnavv {
             position: relative;
             display: inline-block;
         }
 
-        .dropdown-content {
+        .dropdownnavv-content {
             display: none;
             position: absolute;
             background-color: #fff;
@@ -112,7 +111,7 @@
             border-radius: 5px;
         }
 
-        .dropdown-content a {
+        .dropdownnavv-content a {
             color: black;
             padding: 12px 16px;
             text-decoration: none;
@@ -120,31 +119,31 @@
             transition: background-color 0.3s;
         }
 
-        .dropdown-content a:hover {
+        .dropdownnavv-content a:hover {
             background-color: #f4f4f4;
         }
 
-        .dropdown:hover .dropdown-content {
+        .dropdownnavv:hover .dropdownnavv-content {
             display: block;
         }
     </style>
 </head>
-<body>
+<body class="bodynav">
     <nav class="navbar">
-        <div class="container">
-            <a href="index.html" class="logo">Blog Guru</a>
-            <ul class="menu">
-                <li><a href="index.jsp">Home</a></li>
-                <!-- Dropdown menu for Blog -->
-                <li class="dropdown">
+        <div class="containernavv">
+            <a href="home" class="logo">Blog Guru</a>
+            <ul class="menunavv">
+                <li><a href="home">Home</a></li>
+                <!-- dropdownnavv menunavv for Blog -->
+                <li class="dropdownnavv">
                     <a href="javascript:void(0)">Blog</a>
-                    <div class="dropdown-content">
+                    <div class="dropdownnavv-content">
                         <a href="login.jsp">Create a Post</a>
                         <a href="login.jsp">See All Blogs</a>
                     </div>
                 </li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="contactuser.jsp">Contact</a></li>
+                <li><a href="about.jsp">About</a></li>
                	<div class="animate___animated
                				animate_bounce
                				animate_infinite">

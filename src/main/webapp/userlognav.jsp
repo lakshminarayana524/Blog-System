@@ -187,22 +187,20 @@
                 <li><a href="about.jsp">About</a></li>
                  <li class="dropdown">
                     <div id="avatar">
-    <c:choose>
-        <c:when test="${not empty image}">
-            <img src="displayprofileimage?id=${eid}" alt="profile image">
-        </c:when>
-        <c:otherwise>
-            <img src="imgs/profile.png" alt="default profile image">
-        </c:otherwise>
-    </c:choose>
-   
-</div>
-                    
-                    <div class="dropdown-content">
-						<a href="${pageContext.request.contextPath}/profile/${eusername}" id="usernameLink">Hi, <span>${eusername}</span></a>
-                        <a href="javascript:void(0)" onclick="viewMyBlogs(${eid})">My Blogs</a>
-                        <a href="index.jsp" >Logout</a>
-                    </div>
+					    <c:choose>
+					        <c:when test="${not empty image}">
+					            <img src="displayprofileimage?id=${eid}" alt="profile image">
+					        </c:when>
+					        <c:otherwise>
+					            <img src="imgs/profile.png" alt="default profile image">
+					        </c:otherwise>
+					    </c:choose>
+					</div>
+					<div class="dropdown-content">
+					    <a href="${pageContext.request.contextPath}/profile/${eusername}" id="usernameLink">Hi, <span>${eusername}</span></a>
+					    <a href="javascript:void(0)" onclick="viewMyBlogs(${eid})">My Blogs</a>
+					    <a href="home">Logout</a>
+					</div>
                 </li>
             </ul>
         </div>

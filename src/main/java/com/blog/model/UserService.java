@@ -11,6 +11,7 @@ public interface UserService {
 	public String updateUser(User u);
 	public User getUserByUsername(String username);
     byte[] getUserImageByUsername(String username);
-
+    public String deleteprofileimage(int id);
+    public User getUserById(int id);
 	
 }

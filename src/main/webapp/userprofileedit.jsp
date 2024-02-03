@@ -184,21 +184,22 @@
 <div class="body">
     <div class="userprofile-container">
         <div class="user-avatar-container">
-		    <div class="user-avatar">
-			    <c:choose>
-			        <c:when test="${not empty image}">
-			            <div class="image-container">
-			                <img src="displayprofileimage?id=${eid}" alt="profile image">
-			                
-			            </div><button class="edit-button" onclick="showDeleteModal('${eid}')">Edit</button>
-			        </c:when>
-			        <c:otherwise>
-			            <img src="imgs/profile.png" alt="Default Profile Image">
-			        </c:otherwise>
-			    </c:choose>
-			</div>
-		</div>
+            <div class="user-avatar">
+                <c:choose>
+                    <c:when test="${not empty user.image}">
+                        <div class="image-container">
+                            <img src="displayprofileimage?id=${eid}" alt="profile image">
+                        </div>
+                        <!-- Inside your JSP -->
+							<button class="edit-button" onclick="deleteProfileImage('${eid}','${eusername}')">Delete</button>
 
+                    </c:when>
+                    <c:otherwise>
+                        <img src="imgs/profile.png" alt="Default Profile Image">
+                    </c:otherwise>
+                </c:choose>
+            </div>
+        </div>
         
         <div class="user-details">
             <h1>My Profile</h1>
@@ -231,7 +232,7 @@
                         <i class="input-icon fas fa-phone"></i>
 						<input type="text" id="contact" name="contact" placeholder="Your Contact Number" required value="${econtact}">
                     </div>
-                </div>
+                </div>	
                 <div class="form-group">
                     <label for="password">Password:</label>
                     <div class="input-userprofile-container">
@@ -251,9 +252,10 @@
 			    <div class="modal-content">
 			        <span class="close" onclick="closeDeleteModal()">&times;</span>
 			        <p>Are you sure you want to delete your profile image?</p>
-			        <button onclick="deleteProfileImage('${eid}')">Delete</button>
+			        <button class="edit-button" id="deleteButton">Delete</button>
 			    </div>
 			</div>
+
                 <button type="submit">Save Profile</button>
             </form>
         </div>
@@ -270,24 +272,14 @@
             passwordField.type = "password";
         }
     }
-    
-    function showDeleteModal(userId) {
-        var modal = document.getElementById('deleteModal');
-        modal.style.display = 'block';
+
+    function deleteProfileImage(userId, username) {
+        // Send an AJAX request or redirect to the deleteuserimage/{id} endpoint
+        var url = '${pageContext.request.contextPath}/deleteuserimage/' + userId + '?username=' + encodeURIComponent(username);
+        window.location.href = url;
     }
 
-    function closeDeleteModal() {
-        var modal = document.getElementById('deleteModal');
-        modal.style.display = 'none';
-    }
-
-    function deleteProfileImage(userId) {
-        // Handle the logic to delete the profile image (e.g., make an AJAX request)
-        // ...
-
-        // After deleting, close the modal
-        closeDeleteModal();
-    }
 </script>
+
 </body>
 </html>

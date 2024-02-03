@@ -117,13 +117,40 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            margin-left:10px;
+            padding-left:20px;
+            padding-right:20px;
         }
+        
+        .modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        border-radius: 5px;
+        z-index: 1000;
+    }
+
+    .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
     </style>
 </head>
 <body>
     <%@ include file="userlognav.jsp" %>
     <div class="select-container">
-        <select id="blogSelect">
+        <select id="blogSelect" onchange="filterBlogs()">
             <option value="">None</option> <!-- Add a default option -->
             <c:forEach items="${blogs}" var="blog">
                 <option class="select-option" value="${blog.id}">${blog.title}</option>
@@ -138,7 +165,7 @@
                 <!-- Display blogs if available -->
                 <c:forEach items="${blogs}" var="blog">
                     <a href='<c:url value="viewblogwithcommentbyuid?id=${blog.id}"></c:url>'>
-                        <div class="container">
+                        <div class="container" data-blog-id="${blog.id}">
                             <div class="blog-image">
                                 <img src="displayproimage?id=${blog.id}" alt="Blog Image">
                             </div>
@@ -158,19 +185,50 @@
             </c:otherwise>
         </c:choose>
     </div>
+    <div class="overlay" id="overlay"></div>
+		
+		<div class="modal" id="confirmationModal">
+		    <p id="modalText"></p>
+		    <button onclick="confirmDelete()">Yes</button>
+		    <button onclick="closeModal()">No</button>
+		</div>
 
     <script>
-        function deleteBlog(uid, blogId) {
-            if (blogId === "") {
-                // Show a message if no blog is selected
-                alert("Please select a blog title to delete.");
-                return;
+    function filterBlogs() {
+        var selectedBlogId = document.getElementById('blogSelect').value;
+        var blogContainers = document.getElementsByClassName('container');
+        for (var i = 0; i < blogContainers.length; i++) {
+            var blogContainer = blogContainers[i];
+            var blogId = blogContainer.getAttribute('data-blog-id');
+            if (selectedBlogId === '' || selectedBlogId === blogId) {
+                blogContainer.style.display = 'flex';
+            } else {
+                blogContainer.style.display = 'none';
             }
-
-            // You can perform the delete operation using AJAX or other methods
-            // For simplicity, you can redirect to a delete URL with the selected ID and UID
-            window.location.href = '<c:url value="/deleteuserpost/"></c:url>' + blogId + '?uid=' + uid;
         }
+    }
+
+    function deleteBlog(uid, blogId) {
+        if (blogId === "") {
+            alert("Please select a blog title to delete.");
+            return;
+        }
+       // var confirmDelete = window.confirm("Are you sure you want to delete this blog post?");
+        //if (confirmDelete) {
+            window.location.href = '<c:url value="/deleteuserpost/"></c:url>' + blogId + '?uid=' + uid;
+     //   }
+    }
+
+    function confirmDelete() {
+        var url = '<c:url value="/deleteuserpost/"></c:url>' + window.selectedBlogId + '?uid=' + window.selectedUid;
+        window.location.href = url;
+        closeModal();
+    }
+
+    function closeModal() {
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('confirmationModal').style.display = 'none';
+    }
     </script>
 
 </body>

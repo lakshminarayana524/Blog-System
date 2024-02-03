@@ -14,9 +14,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 //import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,13 +38,16 @@ import com.blog.model.CommentService;
 import com.blog.model.ContactService;
 import com.blog.model.CreateBlogService;
 import com.blog.model.UserService;
+import com.mysql.cj.Session;
 
 import io.micrometer.core.instrument.util.IOUtils;
+import io.micrometer.core.ipc.http.HttpSender.Request;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.websocket.server.PathParam;
 
 @Controller
-//@RequestMapping("/user")
+//@RequestMapping("/user/")
 public class UserController {
 
 	@Autowired
@@ -61,8 +68,44 @@ public class UserController {
 	@GetMapping("/")
 	public String main()
 	{
-		return "index";
+		return "redirect:/home";
 	}
+	
+	@GetMapping("/home")
+	 public ModelAndView viewbloghome(@RequestParam(name = "refresh", defaultValue = "false") boolean refresh) {
+	     ModelAndView mv = new ModelAndView();
+	     mv.setViewName("index");
+//		
+	    // ModelAndView mv = new ModelAndView();
+
+	     // Retrieve user details based on the user ID
+	     
+//	     if (refresh) {
+//	         // Add a check to prevent continuous refresh
+//	         String refreshScript = "<script>location.reload(true);</script>";
+//	         mv.addObject("refreshScript", refreshScript);
+//	     }
+	     
+	     List<CreateBlog> bloglist = cbs.viewAllBlog();
+	     mv.addObject("blogs", bloglist);
+
+	     return mv;
+	 }
+	
+	@GetMapping("/viewblog")
+	public ModelAndView viewblognuser(@RequestParam("id") int id) {
+		// Retrieve the blog and comment data by ID
+	     CreateBlog cb = cbs.getBlogWithComments(id);
+	     //comment comments = as.viewallcommentbyid(id); // Assuming you have a list of comments
+
+	     // Create a ModelAndView and pass both the blog and comments to the view
+	     ModelAndView mv = new ModelAndView();
+	     mv.setViewName("userpreviewblogs");
+	     mv.addObject("blog", cb); // Add the blog to the model
+	     //mv.addObject("comment", comments); // Add the comments to the model
+
+	     return mv;
+	 }
 	
 	@PostMapping("insert")
 	public ModelAndView insertaction(HttpServletRequest request) {
@@ -219,6 +262,37 @@ public class UserController {
 	    return mv;
 	}
 	
+	@PostMapping("AddContacts")
+	public ModelAndView AddContacts(HttpServletRequest request) {
+		String msg = null;
+	    ModelAndView mv = new ModelAndView();
+
+	    try {
+	       String  name = request.getParameter("name");
+	       String email = request.getParameter("email");
+	         String message = request.getParameter("message");
+
+	        Contact emp = new Contact();
+	        emp.setName(name);
+	        emp.setEmail(email);
+	        emp.setMessage(message);
+
+	       
+
+	        msg = cos.AddContact(emp);
+
+	        mv.setViewName("home");
+	        mv.addObject("message", msg);
+	    } catch (Exception e) {
+	        msg = "Invalid Register";
+	        mv.setViewName("Contact");
+	        mv.addObject("message", msg);
+	        request.setAttribute("errorMessage", "Invalid Contact. Please try again.");
+	    }
+
+	    return mv;
+	}
+	
 	@PostMapping("login")
 	public ModelAndView checklogin(HttpServletRequest request) {
 	    ModelAndView mv = new ModelAndView();
@@ -325,6 +399,49 @@ public class UserController {
 	    return mv;
 	}
 	
+	
+	@GetMapping("/blog-update")
+	public ModelAndView updateBlog(@RequestParam("id") int id) {
+	    ModelAndView mv = new ModelAndView("viewblogindetailbyuseredit");
+	    CreateBlog cr = cbs.getBlogWithComments(id);
+	    mv.addObject("blog", cr);
+	    mv.addObject("id", id);
+	    return mv;
+	}
+
+	
+	@PostMapping("updateblog")
+	public ModelAndView updateblog(HttpServletRequest request) throws IOException, SQLException {
+	    String msg = null;
+	    HttpSession session=request.getSession();
+	    ModelAndView mv = new ModelAndView();
+
+	    try {
+	        int id=Integer.parseInt(request.getParameter("id"));
+	        String title = request.getParameter("title");
+	        //String author=request.getParameter("author");
+	        String content = request.getParameter("content");
+	       // int userid =Integer.parseInt(request.getParameter("uid"));
+
+	       // System.out.println("uid: " + userid);
+
+	        CreateBlog emp = new CreateBlog();
+	        emp.setId(id);
+	        emp.setTitle(title);
+	        emp.setContent(content);
+
+	        msg = cbs.updateblog(emp);
+
+	        return new ModelAndView("redirect:/viewblogwithcommentbyuid?id=" + id);
+	    } catch (Exception e) {
+	        msg = e.getMessage();
+	        mv.setViewName("viewAllblog");
+	        mv.addObject("message", msg);
+	        System.out.println("error");
+	    }
+	    return mv;
+	}
+
 
 
 
@@ -370,6 +487,24 @@ public class UserController {
 	    return mv;
 	  }
 	 
+	 @GetMapping("/userlognav")
+	 public ModelAndView userLogNav(HttpServletRequest request) {
+	     HttpSession session = request.getSession();
+
+	     // Retrieve user details from the session
+	     int eid = (int) session.getAttribute("eid");
+
+	     // Fetch the latest user details from the database
+	     User user = us.viewuserbyid(eid);
+
+	     // Create a ModelAndView and set user details in the model attribute
+	     ModelAndView mv = new ModelAndView("userlognav");
+	     mv.addObject("user", user);
+
+	     return mv;
+	 }
+
+
 	/* @GetMapping("/user-image/{username}")
 	    public ResponseEntity<byte[]> getUserImage(@PathVariable String username) {
 	        byte[] imageBytes = us.getUserImageByUsername(username);
@@ -428,7 +563,11 @@ public class UserController {
 	 public ModelAndView viewblog(@RequestParam(name = "refresh", defaultValue = "false") boolean refresh) {
 	     ModelAndView mv = new ModelAndView();
 	     mv.setViewName("viewAllblog");
-//
+//		
+	    // ModelAndView mv = new ModelAndView();
+
+	     // Retrieve user details based on the user ID
+	     
 //	     if (refresh) {
 //	         // Add a check to prevent continuous refresh
 //	         String refreshScript = "<script>location.reload(true);</script>";
@@ -687,8 +826,8 @@ public class UserController {
 	 }
 	 
 	 @GetMapping("deletecommentbyauthor/{commentid}")
-	 public String deletecommentbyuser(@PathVariable("commentid") int commentid,@RequestParam("id") int id,HttpServletRequest request) {
-//		 ModelAndView mv = new ModelAndView();
+	 public String deletecommentbyuser(@PathVariable("commentid") int commentid,@RequestParam("id") int id) {
+//		 
 //	     
 //	     HttpSession session = request.getSession();
 //	     mv.addObject("blogid", session.getAttribute("id"));
@@ -697,6 +836,17 @@ public class UserController {
 		 return"redirect:/viewblogwithcommentbyuid?id=" + id;
 	 }
 	 
-	
+	 @GetMapping("/deleteuserimage/{id}")
+	 public String deleteuserimage(@PathVariable("id") int id, @RequestParam("username") String username, HttpServletRequest request) {
+	     try {
+	         String message = us.deleteprofileimage(id);
+	         return "redirect:/profile/"+username+"/update";
+	     } catch (Exception e) {
+	         // Handle exceptions appropriately (e.g., log them)
+	         e.printStackTrace();
+	         return "redirect:/error"; // Redirect to an error page
+	     }
+	 }
+
 	
 }

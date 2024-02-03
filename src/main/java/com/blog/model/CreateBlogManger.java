@@ -2,9 +2,12 @@ package com.blog.model;
 
 import java.util.List;
 import java.util.Optional;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.blog.entity.CreateBlog;
 import com.blog.entity.comment;
@@ -12,26 +15,54 @@ import com.blog.repository.CommentRepo;
 import com.blog.repository.CreateBlogRepo;
 
 @Service
-public class CreateBlogManger  implements CreateBlogService{
-	
-	@Autowired
-	CreateBlogRepo cr;
-	
-	@Autowired
-	CommentRepo cor;
+public class CreateBlogManger implements CreateBlogService {
 
-	@Override
-	public String Addblog(CreateBlog cb) {
-		 cr.save(cb);
-		 return "Successfully Added";
-		
-	}
+	@PersistenceContext
+    private EntityManager entityManager;
+	
+    @Autowired
+    private CreateBlogRepo cr;
 
-	@Override
-	public List<CreateBlog> viewAllBlog() {
-		// TODO Auto-generated method stub
-		return (List<CreateBlog>) cr.findAll() ;
-	}
+    @Autowired
+    private CommentRepo cor;
+
+    @Override
+    public String Addblog(CreateBlog cb) {
+        cr.save(cb);
+        return "Successfully Added";
+    }
+
+    @Override
+    @Transactional
+    public String updateblog(CreateBlog updatedBlog) {
+        try {
+            // Fetch the existing blog from the database
+            CreateBlog existingBlog = cr.findById(updatedBlog.getId()).orElse(null);
+
+            if (existingBlog == null) {
+                return "Blog not found";
+            }
+
+            // Update only the fields that are not null in the updatedBlog
+            if (updatedBlog.getTitle() != null) {
+                existingBlog.setTitle(updatedBlog.getTitle());
+            }
+
+            // Spring Data JPA automatically tracks changes and flushes them
+
+            return "Blog updated successfully";
+        } catch (Exception e) {
+            System.out.println("Error updating blog: " + e.getMessage());
+            return "Error updating blog: " + e.getMessage();
+        }
+    }
+
+    
+
+    @Override
+    public List<CreateBlog> viewAllBlog() {
+        return (List<CreateBlog>) cr.findAll();
+    }
 
 	@Override
 	public CreateBlog viewallblogsbyid(int id) {

@@ -90,6 +90,7 @@
  
 <%@ include file="userlognav.jsp" %>
     <div>
+    
         <c:forEach items="${blogs}" var="blog">
             <a href='<c:url value="viewblogwithcommentinuser?id=${blog.id}"></c:url>'>
                 <div class="container">

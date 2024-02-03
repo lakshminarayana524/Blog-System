@@ -30,8 +30,9 @@ public class User {
     @Column(name = "password")
     String pass;
     @Lob
-    @Column(name = "image", columnDefinition = "LONGBLOB")
+    @Column(name = "image", columnDefinition = "LONGBLOB", length = 10485760)
     private Blob image;
+
 
     public Blob getImage() {
         return image;

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.blog.entity.User;
 import com.blog.repository.UserRepo;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class UserManager implements UserService {
 
@@ -68,7 +70,27 @@ public class UserManager implements UserService {
 		ur.save(u);
 		return "Employee Updated";
 	}
-
 	
+	
+	 public User getUserById(int id) {
+	        // Assuming userRepository.findById returns an Optional<User>
+	        return ur.getById(id);
+	    }
+	
+	@Override
+	@Transactional
+	public String deleteprofileimage(int id) {
+	    try {
+	        ur.deleteImageById(id);
+	        return "Profile Image Deleted Successfully";
+	    } catch (Exception e) {
+	        // Handle exceptions appropriately (e.g., log them)
+	        e.printStackTrace();
+	        throw new RuntimeException("Failed to delete profile image", e);
+	    }
+	}
+
+
+
 }
 

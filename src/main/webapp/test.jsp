@@ -41,13 +41,13 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav">                     
                     <li class="nav-item">
-                        <a class="nav-link" href="dashboard.jsp">Home</a>
+                        <a class="nav-link" href="index.jsp">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="CreatePost.jsp">Create Post</a>
+                        <a class="nav-link" href="no-sidebar.html">No Sidebar</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="viewAllblog">All Post</a>
+                        <a class="nav-link" href="single-post.html">Single Post</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -63,9 +63,6 @@
                     <li class="nav-item">
                         <a class="nav-link disabled" href="#">Disabled</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="userprofile.jsp">Profile</a>
-                    </li>
                 </ul>
                 <div class="navbar-nav ml-auto">
                     <li class="nav-item">
@@ -73,15 +70,11 @@
                     </li>
                     
                    <div class="navbar-nav ml-auto">
-					   <li class="nav-item">
-                        <a href="index.jsp" class="ml-4 btn btn-dark mt-1 btn-sm">Logout</a>
-                    </li>
+					        <li class="nav-item">
+					            <a href="login.jsp" class="ml-4 btn btn-dark mt-1 btn-sm">Log in</a>
+					        </li>
 					</div>
-					
-					<div class="text-end ml-5 pl-5" style="padding-left: 100px; text-align: right; text-color: black ">
-			        	<p class="text-light" >Hello!! ${name}</p>
-			        </div>
-						
+
                 </div>
             </div>
         </div>

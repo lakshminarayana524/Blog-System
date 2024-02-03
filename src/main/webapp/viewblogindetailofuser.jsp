@@ -4,6 +4,8 @@
  
 <html>
 <head>
+<base href="${pageContext.request.contextPath}/">
+
     <style>
 	    body {
 	        font-family: Arial, sans-serif;
@@ -20,6 +22,13 @@
 	        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 	        border-radius: 5px;
 	    }
+	
+		.edit{
+		margin-left:370px;
+		max-width:70px;
+		}
+		
+		
 	
 	    h1 {
 	        font-size: 24px;
@@ -38,6 +47,8 @@
 	        height: auto;
 	        margin-bottom: 20px;
 	    }
+	    
+	    
 	
 	    button {
 	        background-color: #4CAF50;
@@ -110,7 +121,15 @@
 
 <div class="container">
     <h1>${blog.title}</h1>
-    <p>Author: ${blog.author}</p>
+    <p>Author: ${blog.author}  
+    	<div class="edit">
+    		<div class="edit">
+    <button type="button" onclick="redirectToEditProfile('${pageContext.request.contextPath}/blog-update', '${blog.id}')">Edit</button>
+
+</div>
+
+    	</div>
+    </p>
     <img src="displayproimage?id=${blog.id}" alt="Blog Image"> 
     <p>${blog.content}</p><br>
     
@@ -155,6 +174,14 @@
         // Use the stored previous URL to navigate back
         window.history.back();
     }
+    
+    function redirectToEditProfile(editProfileUrl, blogId) {
+        window.location.href = editProfileUrl + '?id=' + blogId;
+    }
+
+
+
+
 </script>
 
 
